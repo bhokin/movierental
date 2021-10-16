@@ -37,7 +37,7 @@ class Customer:
         fmt = "{:32s}   {:4d} {:6.2f}\n"
 
         for rental in self.rentals:
-            amount = rental.compute_price()
+            amount = rental.get_price()
             # award renter points
             if rental.get_movie().get_price_code() == Movie.NEW_RELEASE:
                 frequent_renter_points += rental.get_days_rented()

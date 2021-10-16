@@ -28,7 +28,7 @@ class Rental:
     def get_days_rented(self):
         return self.days_rented
 
-    def compute_price(self):
+    def get_price(self):
         """Compute rental change."""
         amount = 0
         if self.get_movie().get_price_code() == Movie.REGULAR:

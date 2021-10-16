@@ -17,7 +17,7 @@ class RentalTest(unittest.TestCase):
 		self.assertEqual("CitizenFour", m.get_title())
 		self.assertEqual(Movie.REGULAR, m.get_price_code())
 
-	@unittest.skip("TODO add this test when you refactor rental price")
+	# @unittest.skip("TODO add this test when you refactor rental price")
 	def test_rental_price(self):
 		rental = Rental(self.new_movie, 1)
 		self.assertEqual(rental.get_price(), 3.0)
