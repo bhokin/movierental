@@ -2,7 +2,6 @@ from rental import Rental
 from movie import Movie, PriceCode
 
 
-
 class Customer:
     """
        A customer who rents movies.
@@ -23,26 +22,39 @@ class Customer:
     def get_name(self):
         return self.name
 
-    def statement(self):
+    def compute_rental_points(self) -> int:
+        """Return the rental point."""
+        frequent_renter_points = 0
+        for rental in self.rentals:
+            frequent_renter_points += rental.get_point()
+        return frequent_renter_points
+
+    def compute_total_charge(self) -> float:
+        """Return the rental charge."""
+        total_amount = 0  # total charges
+        for rental in self.rentals:
+            # and accumulate activity
+            total_amount += rental.get_charge()
+        return total_amount
+
+    def statement(self) -> str:
         """
             Print all the rentals in current period, 
             along with total charges and reward points.
             Returns:
                 the statement as a String
         """
-        total_amount = 0  # total charges
-        frequent_renter_points = 0
         statement = f"Rental Report for {self.name}\n\n"
         fmt = "{:32s}    {:4s} {:6s}\n"
         statement += fmt.format("Movie Title", "Days", "Price")
         fmt = "{:32s}   {:4d} {:6.2f}\n"
 
+        total_amount = self.compute_total_charge()
+        frequent_renter_points = self.compute_rental_points()
+
         for rental in self.rentals:
-            frequent_renter_points += rental.get_point()
             #  add detail line to statement
-            statement += fmt.format(rental.get_movie().get_title(), rental.get_days_rented(), rental.get_price())
-            # and accumulate activity
-            total_amount += rental.get_price()
+            statement += fmt.format(rental.get_title(), rental.days_rented, rental.get_charge())
 
         # footer: summary of charges
         statement += "\n"

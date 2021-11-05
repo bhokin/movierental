@@ -6,9 +6,9 @@ class PriceCode(Enum):
     new_release = {"price": lambda days: 3.0 * days,
                    "frp": lambda days: days
                    }
-    regular = {"price": lambda days: 2 if days <= 2 else 2 + (1.5 * (days - 2)),
-               "frp": lambda days: 1
-               }
+    normal = {"price": lambda days: 2 if days <= 2 else 2 + (1.5 * (days - 2)),
+              "frp": lambda days: 1
+              }
     childrens = {"price": lambda days: 1.5 if days <= 3 else 1.5 + (1.5 * (days - 3)),
                  "frp": lambda days: 1
                  }
@@ -29,7 +29,7 @@ class Movie:
     A movie available for rent.
     """
 
-    def __init__(self, title, price_code: PriceCode):
+    def __init__(self, title: str, price_code: PriceCode):
         # Initialize a new movie.
         self.title = title
         self.price_code = price_code
@@ -39,7 +39,4 @@ class Movie:
         return self.price_code
 
     def get_title(self):
-        return self.title
-
-    def __str__(self):
         return self.title
