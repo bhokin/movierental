@@ -1,3 +1,4 @@
+import csv
 from enum import Enum
 
 
@@ -49,3 +50,19 @@ class Movie:
 
     def is_genre(self, genre) -> bool:
         return genre in self._genre
+
+
+class MovieCatalog:
+    """Movie catalog knows all the movies.
+    It is a factory for Movies.
+    """
+
+    def get_movie(self, title: str) -> Movie:
+        csv_reader = csv.reader(open("movies.csv"))
+        for row in csv_reader:
+            if row[1] == title:
+                movie = row
+                name = movie[1]
+                year = movie[2]
+                genre = movie[3].split('|')
+                return Movie(name, year, genre)
