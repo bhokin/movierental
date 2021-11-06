@@ -1,5 +1,52 @@
 import csv
+import datetime
 from enum import Enum
+from typing import List
+
+
+class Movie:
+    """
+    A movie available for rent.
+    """
+
+    def __init__(self, title: str, year: int, genre: List[str]):
+        # Initialize a new movie.
+        self.__title = title
+        self.__year = year
+        self.__genre = genre
+
+    @property
+    def get_title(self):
+        return self.__title
+
+    @property
+    def get_year(self):
+        return self.__year
+
+    @property
+    def get_genre(self):
+        return self.__genre
+
+    def is_genre(self, genre) -> bool:
+        return genre in self.__genre
+
+
+class MovieCatalog:
+    """Movie catalog knows all the movies.
+    It is a factory for Movies.
+    """
+
+    def get_movie(self, title: str) -> Movie:
+        file = open("movies.csv")
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            if row[1] == title:
+                movie = row
+                name = movie[1]
+                year = movie[2]
+                genre = movie[3].split('|')
+                file.close()
+                return Movie(name, year, genre)
 
 
 class PriceCode(Enum):
@@ -24,45 +71,10 @@ class PriceCode(Enum):
         point = self.value["frp"]
         return point(days)
 
-
-class Movie:
-    """
-    A movie available for rent.
-    """
-
-    def __init__(self, title, year, genre):
-        # Initialize a new movie.
-        self._title = title
-        self._year = year
-        self._genre = genre
-
-    @property
-    def get_title(self):
-        return self._title
-
-    @property
-    def get_year(self):
-        return self._year
-
-    @property
-    def get_genre(self):
-        return self._genre
-
-    def is_genre(self, genre) -> bool:
-        return genre in self._genre
-
-
-class MovieCatalog:
-    """Movie catalog knows all the movies.
-    It is a factory for Movies.
-    """
-
-    def get_movie(self, title: str) -> Movie:
-        csv_reader = csv.reader(open("movies.csv"))
-        for row in csv_reader:
-            if row[1] == title:
-                movie = row
-                name = movie[1]
-                year = movie[2]
-                genre = movie[3].split('|')
-                return Movie(name, year, genre)
+    def for_movie(movie: Movie):
+        this_year = datetime.date.today().year
+        if movie.get_year == this_year:
+            return PriceCode.new_release
+        elif "Children" in movie.get_genre:
+            return PriceCode.childrens
+        return PriceCode.normal

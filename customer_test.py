@@ -2,7 +2,7 @@ import re
 import unittest
 from customer import Customer
 from rental import Rental
-from movie import Movie, PriceCode
+from movie import MovieCatalog, PriceCode
 
 
 class CustomerTest(unittest.TestCase):
@@ -14,10 +14,16 @@ class CustomerTest(unittest.TestCase):
         c = a customer
         movies = list of some movies
         """
+        catalog = MovieCatalog()
         self.c = Customer("Movie Mogul")
-        self.new_movie = Movie("Mulan", PriceCode.NEW_RELEASE)
-        self.regular_movie = Movie("CitizenFour", PriceCode.REGULAR)
-        self.childrens_movie = Movie("Frozen", PriceCode.CHILDRENS)
+        self.new_movie = catalog.get_movie("ISP")
+        self.price_code_new = PriceCode.for_movie(self.new_movie)
+
+        self.normal_movie = catalog.get_movie("Spotlight")
+        self.price_code_normal = PriceCode.for_movie(self.normal_movie)
+
+        self.childrens_movie = catalog.get_movie("The Legend of Sarila")
+        self.price_code_childrens = PriceCode.for_movie(self.childrens_movie)
 
     @unittest.skip("No convenient way to test")
     def test_billing():
@@ -34,7 +40,7 @@ class CustomerTest(unittest.TestCase):
         self.assertIsNotNone(matches)
         self.assertEqual("0.00", matches[1])
         # add a rental
-        self.c.add_rental(Rental(self.new_movie, 4))  # days
+        self.c.add_rental(Rental(self.new_movie, 4, self.price_code_new))  # days
         stmt = self.c.statement()
         matches = re.match(pattern, stmt.replace('\n', ''), flags=re.DOTALL)
         self.assertIsNotNone(matches)

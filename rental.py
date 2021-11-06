@@ -36,4 +36,4 @@ class Rental:
         return self.get_price_code().point(self.days_rented)
 
     def get_title(self) -> str:
-        return self.movie.get_title()
+        return self.movie.get_title
