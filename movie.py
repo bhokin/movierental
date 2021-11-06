@@ -29,14 +29,23 @@ class Movie:
     A movie available for rent.
     """
 
-    def __init__(self, title: str, price_code: PriceCode):
+    def __init__(self, title, year, genre):
         # Initialize a new movie.
-        self.title = title
-        self.price_code = price_code
+        self._title = title
+        self._year = year
+        self._genre = genre
 
-    def get_price_code(self):
-        # get the price code
-        return self.price_code
-
+    @property
     def get_title(self):
-        return self.title
+        return self._title
+
+    @property
+    def get_year(self):
+        return self._year
+
+    @property
+    def get_genre(self):
+        return self._genre
+
+    def is_genre(self, genre) -> bool:
+        return genre in self._genre
